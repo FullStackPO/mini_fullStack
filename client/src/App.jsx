@@ -57,6 +57,13 @@ const App = () => {
     }
   }
 
+  const deleteHandler = (noteid) => {
+    axios.delete(`http://localhost:3000/api/user/${noteid}`)
+    .then(res => { 
+      console.log(res.data)
+      fetchData()
+  })}
+
   return (
     <div>
       <Navbar />
@@ -177,6 +184,10 @@ const App = () => {
                 </p>
                 <p>Gender - {elem.gender}</p>
                 <p>Email - {elem.email}</p>
+                <button
+                className='bg-red-500 p-2 mt-2 rounded-lg'
+                onClick={() => { deleteHandler(elem._id) }}
+                >Delete</button>
               </div>
             )
           })}
