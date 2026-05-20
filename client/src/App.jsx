@@ -12,7 +12,8 @@ const App = () => {
     lastName: '',
     dob: '',
     email: '',
-    gender: ''
+    gender: '',
+    role: ''
   })
 
   const fetchData = async () => {
@@ -49,7 +50,8 @@ const App = () => {
         lastName: '',
         dob: '',
         email: '',
-        gender: ''
+        gender: '',
+        role: ''
       })
 
     } catch (error) {
@@ -163,6 +165,22 @@ const App = () => {
             </select>
             </div>
 
+            <div className='flex flex-col'>
+            <label
+            className='font-semibold text-xl' 
+            htmlFor='role'>Role</label>
+            <input
+             id='role'
+              type="text"
+              name="role"
+              placeholder='Enter employee role'
+              className='outline-1 p-2 rounded'
+              value={formData.role}
+              onChange={handleChange}
+              required
+            />
+            </div>
+
             <button 
             className='bg-green-500 text-white p-2 rounded-xl font-bold text-xl'>
               Submit
@@ -184,11 +202,13 @@ const App = () => {
                 </p>
                 <p>Gender - {elem.gender}</p>
                 <p>Email - {elem.email}</p>
+                <p>Role - {elem.role}</p>
                 <button
                 className='bg-red-500 p-2 mt-2 rounded-lg'
                 onClick={() => { deleteHandler(elem._id) }}
                 >Delete</button>
               </div>
+
             )
           })}
         </div>

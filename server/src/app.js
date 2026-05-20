@@ -9,14 +9,15 @@ app.use(express.json())
 
 //post API
 app.post('/api/user', async(req,res) => {
-    const {firstName , lastName , dob , email , gender} = req.body
+    const {firstName , lastName , dob , email , gender, role} = req.body
 
     const users = await registerUserModel.create({
         firstName,
         lastName,
         dob,
         email,
-        gender
+        gender,
+        role
     })
 
     res.status(201).json({
@@ -47,5 +48,8 @@ app.delete('/api/user/:id', async(req,res) => {
         users
     })
 })
+
+//patch API
+
 
 module.exports = app

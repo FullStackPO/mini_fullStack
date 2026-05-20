@@ -28,6 +28,11 @@ const registerUserSchema = new mongoose.Schema({
     gender : {
         type : String,
         enum : ['male','female','other']
+    },
+
+    role : {
+        type : String,
+        required : true
     }
 
 }, {timestamps : true})
