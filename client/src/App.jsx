@@ -7,6 +7,8 @@ const App = () => {
 
   const [empData, setEmpData] = useState([])
 
+  const [editId, setEditId] = useState(null)
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -32,32 +34,48 @@ const App = () => {
     })
   }
 
-  const submitHandler = async (e) => {
-    e.preventDefault()
+const submitHandler = async (e) => {
+  e.preventDefault()
+  try {
 
-    try {
+    if (editId) {
+
+      // Update User
+      const res = await axios.patch(
+        `http://localhost:3000/api/user/${editId}`,
+        formData
+      )
+
+      console.log(res.data)
+
+    } else {
+
+      // Create User
       const res = await axios.post(
         'http://localhost:3000/api/user',
         formData
       )
 
       console.log(res.data)
-
-      fetchData()
-
-      setFormData({
-        firstName: '',
-        lastName: '',
-        dob: '',
-        email: '',
-        gender: '',
-        role: ''
-      })
-
-    } catch (error) {
-      console.log(error)
     }
+
+    fetchData()
+
+    setFormData({
+      firstName: '',
+      lastName: '',
+      dob: '',
+      email: '',
+      gender: '',
+      role: ''
+    })
+
+    setEditId(null)
+
+  } catch (error) {
+    console.log(error)
   }
+}
 
   const deleteHandler = (noteid) => {
     axios.delete(`http://localhost:3000/api/user/${noteid}`)
@@ -65,6 +83,22 @@ const App = () => {
       console.log(res.data)
       fetchData()
   })}
+
+  const editHandler = (user) => {
+
+  setEditId(user._id)
+
+  setFormData({
+    firstName: user.firstName,
+    lastName: user.lastName,
+    dob: user.dob.split('T')[0],
+    email: user.email,
+    gender: user.gender,
+    role: user.role
+  })
+}
+
+
 
   return (
     <div>
@@ -183,7 +217,7 @@ const App = () => {
 
             <button 
             className='bg-green-500 text-white p-2 rounded-xl font-bold text-xl'>
-              Submit
+              {editId ? 'Update User' : 'Submit'}
             </button>
 
           </form>
@@ -203,12 +237,19 @@ const App = () => {
                 <p>Gender - {elem.gender}</p>
                 <p>Email - {elem.email}</p>
                 <p>Role - {elem.role}</p>
+
                 <button
                 className='bg-red-500 p-2 mt-2 rounded-lg'
                 onClick={() => { deleteHandler(elem._id) }}
                 >Delete</button>
-              </div>
 
+                <button
+                className='bg-blue-500 p-2 mt-2 rounded-lg ml-2'
+                onClick={() => editHandler(elem)}
+                >
+                Edit Role
+                </button>
+                </div>
             )
           })}
         </div>
