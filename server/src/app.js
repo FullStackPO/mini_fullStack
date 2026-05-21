@@ -50,6 +50,29 @@ app.delete('/api/user/:id', async(req,res) => {
 })
 
 //patch API
+app.patch('/api/user/:id', async(req, res) => {
+    try {
+        const id = req.params.id
+        const user = await registerUserModel.findById(id)
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found'
+            })
+        }
+        if (req.body.role) {
+            user.role = req.body.role
+        }
+        await user.save()
+        res.status(200).json({
+            message: 'Role updated successfully',
+            user
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        })
+    }
+})
 
 
 module.exports = app
