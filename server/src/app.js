@@ -6,6 +6,7 @@ const cors = require('cors')
 //middlewares
 app.use(cors())
 app.use(express.json())
+app.use(express.static('./public'))
 
 //post API
 app.post('/api/user', async(req,res) => {
